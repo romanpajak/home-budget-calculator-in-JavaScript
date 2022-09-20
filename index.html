@@ -28,9 +28,9 @@
                         <form>
                             <label class="form-label">Przychody</label>
                             <div class="input-group input-group-sm ">
-                            <input id="incomeName" type="text" class="form-control" placeholder="Nazwa przychodu">
-                            <input id="incomeAmount" type="number" class="form-control" placeholder="Kwota">
-                            <button onclick="getFormValues()" type="button" class="btn btn-secondary">Dodaj</button>
+                            <input id="incomeName" type="text" class="form-control item-name" placeholder="Nazwa przychodu">
+                            <input id="incomeAmount" type="number" class="form-control item-amount" placeholder="Kwota">
+                            <button onclick="addItem('incomes')" type="button" class="btn btn-secondary">Dodaj</button>
                            </div>  
                         </form>
                     </div>
@@ -52,7 +52,7 @@
                     </div>
                     <div id="incomesSum" class="row h-auto">
                         <div class="sumInfo h-auto">
-                            <p id="incomesSumDetails" class="bg-success text-white rounded p-2">Suma przychodów: <span class="price">5000</span></p>
+                            <p id="incomesSumDetails" class="bg-success text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
                         </div>
                     </div>
 
@@ -88,7 +88,7 @@
                     </div>
                     <div id="incomesSum" class="row h-auto mt-auto">
                         <div class="sumInfo h-auto">
-                            <p class="bg-danger text-white rounded p-2">Suma przychodów: <span class="price">5000</span></p>
+                            <p class="bg-danger text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
                         </div>
                     </div>
                     
