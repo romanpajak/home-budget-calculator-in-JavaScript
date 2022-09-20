@@ -1,0 +1,60 @@
+.logo{
+    width: 150px;
+}
+.header-content{
+display: flex;
+justify-content: center;
+margin: 20px 0;
+}
+.form-label{
+    margin: 10px 0;
+    font-weight: bold;
+}
+.main-column:nth-of-type(1) {
+    border: 1px solid green;
+}
+.main-column:nth-of-type(2){
+    border: 1px solid red;
+}
+.item-row{
+    display: flex;
+    flex-direction: column;
+}
+.item-kind::after{
+content: "-";
+}
+.item-value::after{
+    content: "zł";
+}
+.row-details{
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.buttons-container{
+    justify-content: center;
+}
+#delate-btn{
+    margin-left: 5px;
+}
+.price{
+    font-weight: bold;
+}
+.price::after{
+    content: "zł";
+}
+@media screen and (min-width:300px) {
+    .item-row{
+        display: flex;
+        flex-direction: row;
+    }
+    .row-details{
+        justify-content: flex-start;
+        margin-bottom: 5px;
+    }
+
+    .buttons-container{
+        justify-content: flex-end;
+    }
+    
+}
