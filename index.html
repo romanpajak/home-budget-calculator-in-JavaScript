@@ -36,7 +36,7 @@
                     </div>
                     
                     <div id="incomesList" class="contents h-auto">
-                            <div id="incomeItem" class="item-row row h-auto m-2 pt-3 pb-3">
+                            <div id="incomesRow0" class="item-row row h-auto m-2 pt-3 pb-3">
                                <div class="row-details d-flex col h-auto">
                                     <p id="incomeKind" class="item-kind mb-0">Praca</p>
                                     <p id="incomeValue" class="item-value mb-0">2000</p>
@@ -64,38 +64,51 @@
                         <form>
                             <label class="form-label">Przychody</label>
                             <div class="input-group input-group-sm ">
-                            <input id="icomeName" type="text" class="form-control" placeholder="Nazwa przychodu">
-                            <input id="incomeAmount" type="number" class="form-control" placeholder="Kwota">
-                            <button onclick="getIntoIncomesList()" type="button" class="btn btn-secondary">Dodaj</button>
+                            <input id="incomeName" type="text" class="form-control item-name" placeholder="Nazwa przychodu">
+                            <input id="incomeAmount" type="number" class="form-control item-amount" placeholder="Kwota">
+                            <button onclick="addItem('expences')" type="button" class="btn btn-secondary">Dodaj</button>
                            </div>  
                         </form>
                     </div>
                     
-                    <div id="incomesList" class="contents h-auto">
-                            <div id="incomeItem" class="item-row row h-auto m-2 pt-3 pb-3">
+                    <div id="expencesList" class="contents h-auto">
+                            <div id="expencesRow0" class="item-row row h-auto m-2 pt-3 pb-3">
                                <div class="row-details d-flex col h-auto">
                                     <p id="incomeKind" class="item-kind mb-0">Praca</p>
-                                    <p id="incomeValue" class="mb-0">2000zł</p>
+                                    <p id="incomeValue" class="item-value mb-0">2000</p>
                                </div>
                                
                                <div class="buttons-container col h-auto p-0 d-flex">
-                                    <div class="buttons">
+                                    <div class="buttons d-flex">
                                         <button type="button" class="btn btn btn-outline-success btn-sm">Edytuj</button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm">Usuń</button>
+                                        <button id="delate-btn" type="button" class="btn btn-outline-danger btn-sm" onclick="delateItem(this)">Usuń</button>
                                     </div>       
                                </div>
                             </div>
                     </div>
-                    <div id="incomesSum" class="row h-auto mt-auto">
+                    <div id="incomesSum" class="row h-auto">
                         <div class="sumInfo h-auto">
-                            <p class="bg-danger text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
+                            <p id="incomesSumDetails" class="bg-danger text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
                         </div>
                     </div>
                     
 
                 </div>
             </div>
+            <!-- okno modalne -->
+
             
+
+
+
+
+
+
+
+
+
+
+
         </div>
 
     
