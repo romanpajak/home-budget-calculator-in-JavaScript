@@ -23,80 +23,70 @@
             </div>
             
             <div class="row g-3">
-                <div id="incomes" class="main-column col-md h-auto">
-                    <div id="incomesForm" class="row h-auto">
+                <div id="incomes" class="main-column col-md h-auto d-flex flex-column">
+                    <div class="row h-auto">
                         <form>
-                            <label class="form-label">Przychody</label>
+                            <label class="form-label">PRZYCHODY</label>
                             <div class="input-group input-group-sm ">
-                            <input id="incomeName" type="text" class="form-control item-name" placeholder="Nazwa przychodu">
-                            <input id="incomeAmount" type="number" class="form-control item-amount" placeholder="Kwota">
+                            <input type="text" class="form-control item-name" placeholder="Nazwa przychodu">
+                            <input type="number" class="form-control item-amount" placeholder="Kwota">
                             <button onclick="addItem('incomes')" type="button" class="btn btn-secondary">Dodaj</button>
                            </div>  
                         </form>
                     </div>
                     
                     <div id="incomesList" class="contents h-auto">
-                            <div id="incomesRow0" class="item-row row h-auto m-2 pt-3 pb-3">
-                               <div class="row-details d-flex col h-auto">
-                                    <p id="incomeKind" class="item-kind mb-0">Praca</p>
-                                    <p id="incomeValue" class="item-value mb-0">2000</p>
-                               </div>
-                               
-                               <div class="buttons-container col h-auto p-0 d-flex">
-                                    <div class="buttons d-flex">
-                                        <button type="button" class="btn btn btn-outline-success btn-sm">Edytuj</button>
-                                        <button id="delate-btn" type="button" class="btn btn-outline-danger btn-sm" onclick="delateItem(this)">Usuń</button>
-                                    </div>       
-                               </div>
-                            </div>
                     </div>
-                    <div id="incomesSum" class="row h-auto">
-                        <div class="sumInfo h-auto">
-                            <p id="incomesSumDetails" class="bg-success text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
+                    <div class="row h-auto mt-auto">
+                        <div class="h-auto">
+                            <p class="bg-success text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
                         </div>
                     </div>
 
                 </div>
               
-                <div id="expences" class="main-column col-md h-auto">
+                <div id="expences" class="main-column col-md h-auto d-flex flex-column">
                    
-                    <div id="incomesForm" class="row h-auto">
+                    <div class="row h-auto">
                         <form>
-                            <label class="form-label">Przychody</label>
+                            <label class="form-label">WYDATKI</label>
                             <div class="input-group input-group-sm ">
-                            <input id="incomeName" type="text" class="form-control item-name" placeholder="Nazwa przychodu">
-                            <input id="incomeAmount" type="number" class="form-control item-amount" placeholder="Kwota">
+                            <input type="text" class="form-control item-name" placeholder="Nazwa wydatku">
+                            <input type="number" class="form-control item-amount" placeholder="Kwota">
                             <button onclick="addItem('expences')" type="button" class="btn btn-secondary">Dodaj</button>
                            </div>  
                         </form>
                     </div>
                     
                     <div id="expencesList" class="contents h-auto">
-                            <div id="expencesRow0" class="item-row row h-auto m-2 pt-3 pb-3">
-                               <div class="row-details d-flex col h-auto">
-                                    <p id="incomeKind" class="item-kind mb-0">Praca</p>
-                                    <p id="incomeValue" class="item-value mb-0">2000</p>
-                               </div>
-                               
-                               <div class="buttons-container col h-auto p-0 d-flex">
-                                    <div class="buttons d-flex">
-                                        <button type="button" class="btn btn btn-outline-success btn-sm">Edytuj</button>
-                                        <button id="delate-btn" type="button" class="btn btn-outline-danger btn-sm" onclick="delateItem(this)">Usuń</button>
-                                    </div>       
-                               </div>
-                            </div>
                     </div>
-                    <div id="incomesSum" class="row h-auto">
-                        <div class="sumInfo h-auto">
-                            <p id="incomesSumDetails" class="bg-danger text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
+                    <div class="row h-auto mt-auto">
+                        <div class="h-auto">
+                            <p class="bg-danger text-white rounded p-2 mt-5">Suma przychodów: <span class="price">0</span></p>
                         </div>
                     </div>
                     
 
                 </div>
             </div>
-            <!-- okno modalne -->
+            <div id="modalBox" class="modal">
 
+                <div class="modal-content">
+                  <form id="modalForm">
+                    <div class="form-group mb-3">
+                        <input id="modalFormTextInp" type="text" class="form-control mb-2">
+                        <input id="modalFormNumbInp" type="number" class="form-control">
+                    </div>
+                  </form>
+                  <p id="alertContent" class="text-center">Some text in the Modal..</p>
+                  <div class="modal-buttons d-flex">
+                  <button id="btn-1" type="button" class="btn btn-secondary btn-sm m-1">Zatwierdź</button>
+                  <button id="btn-2" type="button" class="btn btn-success btn-sm m-1">Zamknij</button>
+                  </div>
+              
+                </div>
+              
+            </div>
             
 
 

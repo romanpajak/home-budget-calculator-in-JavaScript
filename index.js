@@ -1,6 +1,24 @@
 function addItem(x){
     let itemName=document.getElementById(x).getElementsByClassName("item-name")[0].value;
     let itemValue=document.getElementById(x).getElementsByClassName("item-amount")[0].value;
+    //forms errors handling
+    let formNamePlaceholder=document.getElementById(x).getElementsByClassName("item-name")[0].placeholder;
+    let formAmountPlaceholder=document.getElementById(x).getElementsByClassName("item-amount")[0].placeholder;
+    if(itemName==""&&itemValue==""){
+    let con="Uzupełnij pola: "+formNamePlaceholder+" i "+formAmountPlaceholder;
+    showAlert(con);
+    return;
+    }
+    if(itemName==""){
+    con="Uzupełnij pole "+formNamePlaceholder;
+    showAlert(con);
+    return;
+    }
+    if(itemValue==""){
+    con="Uzupełnij pole "+formAmountPlaceholder;
+    showAlert(con);
+    return;
+    }
     let newItem=document.createElement("div");
     let idName=x+"List";
     let idItemsCounter=document.getElementById(idName).getElementsByClassName("item-row").length
@@ -27,23 +45,25 @@ function addItem(x){
     leftButton.type="button";
     leftButton.classList="btn btn btn-outline-success btn-sm";
     leftButton.innerHTML="Edytuj";
+    let leftBtnOnclick=document.createAttribute("onclick");
+    leftBtnOnclick.value="editItem(this)";
+    leftButton.setAttributeNode(leftBtnOnclick);
     let rightButton=document.createElement("button");
     rightButton.type="button";
-    rightButton.id="delate-btn";
-    rightButton.classList="btn btn-outline-danger btn-sm";
+    rightButton.classList="delate-btn btn btn-outline-danger btn-sm";
     rightButton.innerHTML="Usuń";
     buttonsContainer.appendChild(leftButton);
     buttonsContainer.appendChild(rightButton);
-    onClickFunc=document.createAttribute("onclick")
-    onClickFunc.value="delateItem(this,\'"+x+"\')";
-    rightButton.setAttributeNode(onClickFunc)
+    let rightBtnOnclick=document.createAttribute("onclick")
+    rightBtnOnclick.value="delateItem(this,\'"+x+"\')";
+    rightButton.setAttributeNode(rightBtnOnclick)
     rightButton.innerHTML="Usuń";
     newItem.appendChild(leftColumn);
     newItem.appendChild(rightColumn);
-    
     document.getElementById(idName).appendChild(newItem);
     getSum(x);
     totalBalance();
+    document.getElementById(x).getElementsByTagName("form")[0].reset();
 }
 
 function delateItem(e,x){
@@ -75,4 +95,48 @@ function totalBalance(){
         document.getElementById("headerDetails").innerHTML="Bilans jest ujemny. Jesteś na minusie " + totalSum+" złotych";
     }
 
+}
+//modal box functions
+let modal = document.getElementById("modalBox");
+let btn = document.getElementById("myBtn");
+let btn1 = document.getElementById("btn-1");
+let btn2 = document.getElementById("btn-2");
+let modForm = document.getElementById("modalForm");
+let modContent=document.getElementById("alertContent");
+btn2.onclick = function() {
+  modal.style.display = "none";
+}
+function showAlert(con){
+modal.style.display="block";
+modContent.style.display="block"
+btn1.style.display="none";
+modForm.style.display="none";
+modContent.style.color="black";
+modContent.innerHTML=con;
+}
+function editItem(e){
+modForm.style.display="block";
+btn1.style.display="block";
+let colId=e.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+let itemKind=e.parentNode.parentNode.parentNode.getElementsByClassName("item-kind")[0];
+let itemValue=e.parentNode.parentNode.parentNode.getElementsByClassName("item-value")[0];
+let modFormTxt=document.getElementById("modalFormTextInp");
+let modFormNmb=document.getElementById("modalFormNumbInp");
+modFormTxt.value=itemKind.innerHTML;
+modFormNmb.value=itemValue.innerHTML;
+modContent.style.display="none";
+modal.style.display="block";
+btn1.onclick=function(){
+    if(modFormTxt.value==""||modFormNmb.value==""){
+        modContent.style.display="block";
+        modContent.style.color="red";
+        modContent.innerHTML="Wartości w polach nie mogą być puste";
+        return;
+    }
+    itemKind.innerHTML=modFormTxt.value;
+    itemValue.innerHTML=modFormNmb.value;
+    modal.style.display = "none";
+    getSum(colId);
+    totalBalance();
+}
 }
