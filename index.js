@@ -24,7 +24,6 @@ function addItem(x){
     let idItemsCounter=document.getElementById(idName).getElementsByClassName("item-row").length
     newItem.id=x+"Row"+idItemsCounter;
     newItem.className="item-row row h-auto m-2 pt-3 pb-3"
-    //left column
     let leftColumn=document.createElement("div");
     leftColumn.className="row-details d-flex col h-auto";
     let newItemKind=document.createElement("p");
@@ -35,7 +34,6 @@ function addItem(x){
     newItemValue.className="item-value mb-0"
     newItemValue.innerHTML=itemValue;
     leftColumn.appendChild(newItemValue);
-    //right column
     let rightColumn=document.createElement("div");
     rightColumn.classList="buttons-container col h-auto p-0 d-flex";
     let buttonsContainer=document.createElement("div");
@@ -94,7 +92,6 @@ function totalBalance(){
     if(totalSum<0){
         document.getElementById("headerDetails").innerHTML="Bilans jest ujemny. Jesteś na minusie " + totalSum+" złotych";
     }
-
 }
 //modal box functions
 let modal = document.getElementById("modalBox");
@@ -133,10 +130,10 @@ btn1.onclick=function(){
         modContent.innerHTML="Wartości w polach nie mogą być puste";
         return;
     }
-    itemKind.innerHTML=modFormTxt.value;
-    itemValue.innerHTML=modFormNmb.value;
-    modal.style.display = "none";
-    getSum(colId);
-    totalBalance();
+itemKind.innerHTML=modFormTxt.value;
+itemValue.innerHTML=modFormNmb.value;
+modal.style.display = "none";
+getSum(colId);
+totalBalance();
 }
 }
