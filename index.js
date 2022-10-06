@@ -4,57 +4,57 @@ function addItem(x){
     //forms errors handling
     let formNamePlaceholder=document.getElementById(x).getElementsByClassName("item-name")[0].placeholder;
     let formAmountPlaceholder=document.getElementById(x).getElementsByClassName("item-amount")[0].placeholder;
-    if(itemName==""&&itemValue==""){
-    let con="Uzupełnij pola: "+formNamePlaceholder+" i "+formAmountPlaceholder;
-    showAlert(con);
+    if(itemName===""&&itemValue===""){
+    let warn=`Uzupełnij pola: ${formNamePlaceholder} i ${formAmountPlaceholder}`;
+    showAlert(warn);
     return;
     }
-    if(itemName==""){
-    con="Uzupełnij pole "+formNamePlaceholder;
-    showAlert(con);
+    if(itemName===""){
+    warn=`Uzupełnij pole ${formNamePlaceholder}`;
+    showAlert(warn);
     return;
     }
-    if(itemValue==""){
-    con="Uzupełnij pole "+formAmountPlaceholder;
-    showAlert(con);
+    if(itemValue===""){
+    warn=`Uzupełnij pole ${formAmountPlaceholder}`;
+    showAlert(warn);
     return;
     }
+    if(itemValue<=0){
+        warn=`Pole ${formAmountPlaceholder} musi zawierać wartość liczbową powyżej 0`;
+        showAlert(warn);
+        return;
+        }
+
     let newItem=document.createElement("div");
     let idName=x+"List";
-    let idItemsCounter=document.getElementById(idName).getElementsByClassName("item-row").length
-    newItem.id=x+"Row"+idItemsCounter;
-    newItem.className="item-row row h-auto m-2 pt-3 pb-3"
+    newItem.classList="item-row row h-auto m-2 pt-3 pb-3"
     let leftColumn=document.createElement("div");
-    leftColumn.className="row-details d-flex col h-auto";
+    leftColumn.classList="row-details d-flex col h-auto";
     let newItemKind=document.createElement("p");
-    newItemKind.className="item-kind mb-0";
+    newItemKind.classList="item-kind mb-0";
     newItemKind.innerHTML=itemName;
     leftColumn.appendChild(newItemKind);
     let newItemValue=document.createElement("p");
-    newItemValue.className="item-value mb-0"
+    newItemValue.classList="item-value mb-0"
     newItemValue.innerHTML=itemValue;
     leftColumn.appendChild(newItemValue);
     let rightColumn=document.createElement("div");
     rightColumn.classList="buttons-container col h-auto p-0 d-flex";
     let buttonsContainer=document.createElement("div");
-    buttonsContainer.className="buttons d-flex";
+    buttonsContainer.classList="buttons d-flex";
     rightColumn.appendChild(buttonsContainer);
     let leftButton=document.createElement("button");
     leftButton.type="button";
     leftButton.classList="btn btn btn-outline-success btn-sm";
     leftButton.innerHTML="Edytuj";
-    let leftBtnOnclick=document.createAttribute("onclick");
-    leftBtnOnclick.value="editItem(this)";
-    leftButton.setAttributeNode(leftBtnOnclick);
+    leftButton.addEventListener("click",editItem);
     let rightButton=document.createElement("button");
     rightButton.type="button";
     rightButton.classList="delate-btn btn btn-outline-danger btn-sm";
     rightButton.innerHTML="Usuń";
     buttonsContainer.appendChild(leftButton);
     buttonsContainer.appendChild(rightButton);
-    let rightBtnOnclick=document.createAttribute("onclick")
-    rightBtnOnclick.value="delateItem(this,\'"+x+"\')";
-    rightButton.setAttributeNode(rightBtnOnclick)
+    rightButton.addEventListener("click",delateItem);
     rightButton.innerHTML="Usuń";
     newItem.appendChild(leftColumn);
     newItem.appendChild(rightColumn);
@@ -64,17 +64,17 @@ function addItem(x){
     document.getElementById(x).getElementsByTagName("form")[0].reset();
 }
 
-function delateItem(e,x){
-    e.parentNode.parentNode.parentNode.remove();
-    getSum(x);
+function delateItem(x){
+    let parendId=this.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+    this.parentNode.parentNode.parentNode.remove();
+    getSum(parendId);
     totalBalance();
 }
 
 function getSum(x){
-    let itemValuesLen;
-    itemValuesLen=document.getElementById(x).getElementsByClassName("item-value").length;
+    let itemValuesLen=document.getElementById(x).getElementsByClassName("item-value").length;
     let valuesSum=0;
-    for(i=0;i<itemValuesLen;i++){
+    for(let i=0;i<itemValuesLen;i++){
         valuesSum+=parseInt(document.getElementById(x).getElementsByClassName("item-value")[i].innerHTML);
     }
     document.getElementById(x).getElementsByClassName("price")[0].innerHTML=valuesSum;
@@ -86,7 +86,7 @@ function totalBalance(){
     if(totalSum>0){
         document.getElementById("headerDetails").innerHTML="Możesz jeszcze wydać "+totalSum+" złotych";
     }
-    if(totalSum==0){
+    if(totalSum===0){
         document.getElementById("headerDetails").innerHTML="Bilans wynosi zero";
     }
     if(totalSum<0){
@@ -111,12 +111,12 @@ modForm.style.display="none";
 modContent.style.color="black";
 modContent.innerHTML=con;
 }
-function editItem(e){
+function editItem(){
 modForm.style.display="block";
 btn1.style.display="block";
-let colId=e.parentNode.parentNode.parentNode.parentNode.parentNode.id;
-let itemKind=e.parentNode.parentNode.parentNode.getElementsByClassName("item-kind")[0];
-let itemValue=e.parentNode.parentNode.parentNode.getElementsByClassName("item-value")[0];
+let colId=this.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+let itemKind=this.parentNode.parentNode.parentNode.getElementsByClassName("item-kind")[0];
+let itemValue=this.parentNode.parentNode.parentNode.getElementsByClassName("item-value")[0];
 let modFormTxt=document.getElementById("modalFormTextInp");
 let modFormNmb=document.getElementById("modalFormNumbInp");
 modFormTxt.value=itemKind.innerHTML;
@@ -124,7 +124,7 @@ modFormNmb.value=itemValue.innerHTML;
 modContent.style.display="none";
 modal.style.display="block";
 btn1.onclick=function(){
-    if(modFormTxt.value==""||modFormNmb.value==""){
+    if(modFormTxt.value===""||modFormNmb.value===""){
         modContent.style.display="block";
         modContent.style.color="red";
         modContent.innerHTML="Wartości w polach nie mogą być puste";
