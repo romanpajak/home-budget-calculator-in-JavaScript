@@ -1,10 +1,10 @@
-function addItem(x){
-    let itemName=document.getElementById(x).getElementsByClassName("item-name")[0].value;
-    let itemValue=document.getElementById(x).getElementsByClassName("item-amount")[0].value;
+function addItem(columnId){
+    let itemName=document.getElementById(columnId).getElementsByClassName("item-name")[0].value;
+    let itemValue=document.getElementById(columnId).getElementsByClassName("item-amount")[0].value;
     //----FORMS ERROR HANDLING----
     //if any input is empty
-    let formNamePlaceholder=document.getElementById(x).getElementsByClassName("item-name")[0].placeholder;
-    let formAmountPlaceholder=document.getElementById(x).getElementsByClassName("item-amount")[0].placeholder;
+    let formNamePlaceholder=document.getElementById(columnId).getElementsByClassName("item-name")[0].placeholder;
+    let formAmountPlaceholder=document.getElementById(columnId).getElementsByClassName("item-amount")[0].placeholder;
     
     if(itemName===""&&itemValue===""){
     let warn=`Uzupełnij pola: ${formNamePlaceholder} i ${formAmountPlaceholder}`;
@@ -19,7 +19,7 @@ function addItem(x){
     //if input number empty or contains string
     if(itemValue===""){
     warn=`Uzupełnij pole ${formAmountPlaceholder} wpisując poprawną wartość np. 12.34`;
-    document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
+    document.getElementById(columnId).getElementsByClassName("item-amount")[0].value="";
     showAlert(warn);
     return;
     }
@@ -28,13 +28,13 @@ function addItem(x){
     if(itemValue<=0){
         warn=`Pole ${formAmountPlaceholder} musi zawierać wartość liczbową powyżej 0`;
         showAlert(warn);
-        document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
+        document.getElementById(columnId).getElementsByClassName("item-amount")[0].value="";
         return;
     }
     //if input number starts from dot or colon
     if (itemValue.indexOf(".")===0||itemValue.indexOf(",")===0){
         warn=`Uzupełnij pole ${formAmountPlaceholder} wpisując poprawną wartość np. 12.34`;
-        document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
+        document.getElementById(columnId).getElementsByClassName("item-amount")[0].value="";
         return
     }
     //decimals number
@@ -43,14 +43,14 @@ function addItem(x){
        if (itemValue.length-decimalPosition>3){
         warn=`Pole ${formAmountPlaceholder} nie może zawierać więcej niż 2 miejsca po przecinku.`;
         showAlert(warn);
-        document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
+        document.getElementById(columnId).getElementsByClassName("item-amount")[0].value="";
         return;
        }
     }else{
     itemValue=`${itemValue}.00`;
     }
     let newItem=document.createElement("div");
-    let idName=x+"List";
+    let idName=columnId+"List";
     newItem.classList="item-row row h-auto m-2 pt-3 pb-3"
     let leftColumn=document.createElement("div");
     leftColumn.classList="row-details d-flex col h-auto";
@@ -83,9 +83,9 @@ function addItem(x){
     newItem.appendChild(leftColumn);
     newItem.appendChild(rightColumn);
     document.getElementById(idName).appendChild(newItem);
-    getSum(x);
+    getSum(columnId);
     totalBalance();
-    document.getElementById(x).getElementsByTagName("form")[0].reset();
+    document.getElementById(columnId).getElementsByTagName("form")[0].reset();
 }
 
 function delateItem(){
@@ -161,6 +161,7 @@ function editItem(){
     btn1.onclick=function(){
         let modFormTxtVal=modFormTxt.value;
         let modFormNmbVal=modFormNmb.value;
+        //Form errors handling are repeated from addItem function
         if(modFormTxtVal===""&&modFormNmbVal===""){
             showWarning("Wartości w polach nie mogą być puste");
             return;

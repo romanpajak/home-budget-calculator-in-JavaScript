@@ -28,7 +28,7 @@ margin: 20px 0;
     content: "• ";
 }
 .item-value::after{
-    content: "zł";
+    content: " zł";
 }
 .row-details{
     justify-content: center;
@@ -46,7 +46,7 @@ margin: 20px 0;
     font-weight: bold;
 }
 .price::after{
-    content: "zł";
+    content: " zł";
 }
 #incomesList,#expencesList{
     max-height: 250px;
