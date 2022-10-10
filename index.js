@@ -1,9 +1,11 @@
 function addItem(x){
     let itemName=document.getElementById(x).getElementsByClassName("item-name")[0].value;
     let itemValue=document.getElementById(x).getElementsByClassName("item-amount")[0].value;
-    //forms errors handling
+    //----FORMS ERROR HANDLING----
+    //if any input is empty
     let formNamePlaceholder=document.getElementById(x).getElementsByClassName("item-name")[0].placeholder;
     let formAmountPlaceholder=document.getElementById(x).getElementsByClassName("item-amount")[0].placeholder;
+    
     if(itemName===""&&itemValue===""){
     let warn=`Uzupełnij pola: ${formNamePlaceholder} i ${formAmountPlaceholder}`;
     showAlert(warn);
@@ -14,17 +16,39 @@ function addItem(x){
     showAlert(warn);
     return;
     }
+    //if input number empty or contains string
     if(itemValue===""){
-    warn=`Uzupełnij pole ${formAmountPlaceholder}`;
+    warn=`Uzupełnij pole ${formAmountPlaceholder} wpisując poprawną wartość np. 12.34`;
+    document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
     showAlert(warn);
     return;
     }
+    //if decimal is leading 0
+    itemValue=itemValue.replace(/^0*/g,"").replace(/^(\.|\,)/g,"0.");
     if(itemValue<=0){
         warn=`Pole ${formAmountPlaceholder} musi zawierać wartość liczbową powyżej 0`;
         showAlert(warn);
+        document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
         return;
-        }
-
+    }
+    //if input number starts from dot or colon
+    if (itemValue.indexOf(".")===0||itemValue.indexOf(",")===0){
+        warn=`Uzupełnij pole ${formAmountPlaceholder} wpisując poprawną wartość np. 12.34`;
+        document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
+        return
+    }
+    //decimals number
+    let decimalPosition=itemValue.indexOf(".");
+    if (decimalPosition>0){
+       if (itemValue.length-decimalPosition>3){
+        warn=`Pole ${formAmountPlaceholder} nie może zawierać więcej niż 2 miejsca po przecinku.`;
+        showAlert(warn);
+        document.getElementById(x).getElementsByClassName("item-amount")[0].value="";
+        return;
+       }
+    }else{
+    itemValue=`${itemValue}.00`;
+    }
     let newItem=document.createElement("div");
     let idName=x+"List";
     newItem.classList="item-row row h-auto m-2 pt-3 pb-3"
@@ -64,7 +88,7 @@ function addItem(x){
     document.getElementById(x).getElementsByTagName("form")[0].reset();
 }
 
-function delateItem(x){
+function delateItem(){
     let parendId=this.parentNode.parentNode.parentNode.parentNode.parentNode.id;
     this.parentNode.parentNode.parentNode.remove();
     getSum(parendId);
@@ -75,22 +99,28 @@ function getSum(x){
     let itemValuesLen=document.getElementById(x).getElementsByClassName("item-value").length;
     let valuesSum=0;
     for(let i=0;i<itemValuesLen;i++){
-        valuesSum+=parseInt(document.getElementById(x).getElementsByClassName("item-value")[i].innerHTML);
+        let itemValueContent=document.getElementById(x).getElementsByClassName("item-value")[i].innerHTML;
+        valuesSum+=parseFloat(itemValueContent);
     }
-    document.getElementById(x).getElementsByClassName("price")[0].innerHTML=valuesSum;
+    document.getElementById(x).getElementsByClassName("price")[0].innerHTML=valuesSum.toFixed(2);
 }
 function totalBalance(){
-    let incomesSum=parseInt(document.getElementsByClassName("price")[0].innerHTML);
-    let expencesSum=parseInt(document.getElementsByClassName("price")[1].innerHTML);
-    let totalSum=incomesSum-expencesSum;
+    let incomesSum=parseFloat(document.getElementsByClassName("price")[0].innerHTML);
+    let expencesSum=parseFloat(document.getElementsByClassName("price")[1].innerHTML);
+    let totalSum=parseFloat(incomesSum)-parseFloat(expencesSum);
+    if (totalSum!==0){
+    totalSum=totalSum.toFixed(2);
+    }else{
+        totalSum=0;
+    }
     if(totalSum>0){
-        document.getElementById("headerDetails").innerHTML="Możesz jeszcze wydać "+totalSum+" złotych";
+        document.getElementById("headerDetails").innerHTML=`Możesz jeszcze wydać ${totalSum} złotych`;
     }
     if(totalSum===0){
         document.getElementById("headerDetails").innerHTML="Bilans wynosi zero";
     }
     if(totalSum<0){
-        document.getElementById("headerDetails").innerHTML="Bilans jest ujemny. Jesteś na minusie " + totalSum+" złotych";
+        document.getElementById("headerDetails").innerHTML=`Bilans jest ujemny. Jesteś na minusie ${totalSum} złotych`;
     }
 }
 //modal box functions
@@ -103,37 +133,67 @@ let modContent=document.getElementById("alertContent");
 btn2.onclick = function() {
   modal.style.display = "none";
 }
-function showAlert(con){
+function showAlert(warningText){
 modal.style.display="block";
 modContent.style.display="block"
 btn1.style.display="none";
 modForm.style.display="none";
 modContent.style.color="black";
-modContent.innerHTML=con;
+modContent.innerHTML=warningText;
 }
 function editItem(){
-modForm.style.display="block";
-btn1.style.display="block";
-let colId=this.parentNode.parentNode.parentNode.parentNode.parentNode.id;
-let itemKind=this.parentNode.parentNode.parentNode.getElementsByClassName("item-kind")[0];
-let itemValue=this.parentNode.parentNode.parentNode.getElementsByClassName("item-value")[0];
-let modFormTxt=document.getElementById("modalFormTextInp");
-let modFormNmb=document.getElementById("modalFormNumbInp");
-modFormTxt.value=itemKind.innerHTML;
-modFormNmb.value=itemValue.innerHTML;
-modContent.style.display="none";
-modal.style.display="block";
-btn1.onclick=function(){
-    if(modFormTxt.value===""||modFormNmb.value===""){
+    modForm.style.display="block";
+    btn1.style.display="block";
+    let colId=this.parentNode.parentNode.parentNode.parentNode.parentNode.id;
+    let itemKind=this.parentNode.parentNode.parentNode.getElementsByClassName("item-kind")[0];
+    let itemValue=this.parentNode.parentNode.parentNode.getElementsByClassName("item-value")[0];
+    let modFormTxt=document.getElementById("modalFormTextInp");
+    let modFormNmb=document.getElementById("modalFormNumbInp");
+    modFormTxt.value=itemKind.innerHTML;
+    modFormNmb.value=itemValue.innerHTML;
+    modContent.style.display="none";
+    modal.style.display="block";
+    function showWarning(content){
         modContent.style.display="block";
         modContent.style.color="red";
-        modContent.innerHTML="Wartości w polach nie mogą być puste";
-        return;
+        modContent.innerHTML=content;
     }
-itemKind.innerHTML=modFormTxt.value;
-itemValue.innerHTML=modFormNmb.value;
-modal.style.display = "none";
-getSum(colId);
-totalBalance();
-}
+    btn1.onclick=function(){
+        let modFormTxtVal=modFormTxt.value;
+        let modFormNmbVal=modFormNmb.value;
+        if(modFormTxtVal===""&&modFormNmbVal===""){
+            showWarning("Wartości w polach nie mogą być puste");
+            return;
+        }
+        if(modFormNmbVal===""){
+            showWarning("Uzupełnij pole Kwota wpisując poprawną wartość np. 12.34");
+            modFormNmb.value="";
+            return;
+        }
+        modFormNmbVal=modFormNmbVal.replace(/^0*/g,"").replace(/^(\.|\,)/g,"0.");
+        if(modFormNmbVal<=0){
+            showWarning("Pole Kwota musi zawierać wartość liczbową powyżej 0");
+            modFormNmb.value="";
+            return;
+        }
+        if(modFormNmbVal.indexOf(".")===0||modFormNmbVal.indexOf(",")===0){
+            showWarning("Uzupełnij pole wpisując poprawną wartość np. 12.34");
+            return;
+        }
+        let decimalPos=modFormNmbVal.indexOf(".");
+        if (decimalPos>0){
+            if(modFormNmbVal.length-decimalPos>3){
+               showWarning("Pole  nie może zawierać więcej niż 2 miejsca po przecinku.");
+               modFormNmb.value="";
+               return;
+            }
+        }else{
+            modFormNmbVal=`${modFormNmbVal}.00`; 
+        }
+    itemKind.innerHTML=modFormTxtVal;
+    itemValue.innerHTML=modFormNmbVal;
+    modal.style.display = "none";
+    getSum(colId);
+    totalBalance();
+    }
 }

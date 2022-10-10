@@ -51,7 +51,7 @@ margin: 20px 0;
 #incomesList,#expencesList{
     max-height: 250px;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
 }
 /* modal box style */
 .modal {
