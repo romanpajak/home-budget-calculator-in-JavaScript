@@ -5,7 +5,6 @@ function addItem(columnId){
     //if any input is empty
     let formNamePlaceholder=document.getElementById(columnId).getElementsByClassName("item-name")[0].placeholder;
     let formAmountPlaceholder=document.getElementById(columnId).getElementsByClassName("item-amount")[0].placeholder;
-    
     if(itemName===""&&itemValue===""){
     let warn=`Uzupełnij pola: ${formNamePlaceholder} i ${formAmountPlaceholder}`;
     showAlert(warn);
@@ -46,6 +45,10 @@ function addItem(columnId){
         document.getElementById(columnId).getElementsByClassName("item-amount")[0].value="";
         return;
        }
+       if(itemValue.length-decimalPosition===2){
+        itemValue=`${itemValue}0`
+       }
+
     }else{
     itemValue=`${itemValue}.00`;
     }
@@ -86,6 +89,8 @@ function addItem(columnId){
     getSum(columnId);
     totalBalance();
     document.getElementById(columnId).getElementsByTagName("form")[0].reset();
+    let scrolledElement=document.getElementById(idName);
+    document.getElementById(idName).scrollTo(0, scrolledElement.scrollHeight);
 }
 
 function delateItem(){
@@ -95,14 +100,14 @@ function delateItem(){
     totalBalance();
 }
 
-function getSum(x){
-    let itemValuesLen=document.getElementById(x).getElementsByClassName("item-value").length;
+function getSum(columnID){
+    let itemValuesLen=document.getElementById(columnID).getElementsByClassName("item-value").length;
     let valuesSum=0;
     for(let i=0;i<itemValuesLen;i++){
-        let itemValueContent=document.getElementById(x).getElementsByClassName("item-value")[i].innerHTML;
+        let itemValueContent=document.getElementById(columnID).getElementsByClassName("item-value")[i].innerHTML;
         valuesSum+=parseFloat(itemValueContent);
     }
-    document.getElementById(x).getElementsByClassName("price")[0].innerHTML=valuesSum.toFixed(2);
+    document.getElementById(columnID).getElementsByClassName("price")[0].innerHTML=valuesSum.toFixed(2);
 }
 function totalBalance(){
     let incomesSum=parseFloat(document.getElementsByClassName("price")[0].innerHTML);
@@ -124,23 +129,23 @@ function totalBalance(){
     }
 }
 //modal box functions
-let modal = document.getElementById("modalBox");
-let btn = document.getElementById("myBtn");
-let btn1 = document.getElementById("btn-1");
-let btn2 = document.getElementById("btn-2");
-let modForm = document.getElementById("modalForm");
+const modal = document.getElementById("modalBox");
+const btn = document.getElementById("myBtn");
+const btn1 = document.getElementById("btn-left");
+const btn2 = document.getElementById("btn-right");
+const modForm = document.getElementById("modalForm");
 let modContent=document.getElementById("alertContent");
 btn2.onclick = function() {
   modal.style.display = "none";
 }
 function showAlert(warningText){
-modal.style.display="block";
-modContent.style.display="block"
-btn1.style.display="none";
-modForm.style.display="none";
-modContent.style.color="black";
-modContent.innerHTML=warningText;
-}
+    modal.style.display="block";
+    modContent.style.display="block"
+    btn1.style.display="none";
+    modForm.style.display="none";
+    modContent.style.color="black";
+    modContent.innerHTML=warningText;
+    }
 function editItem(){
     modForm.style.display="block";
     btn1.style.display="block";
@@ -184,9 +189,12 @@ function editItem(){
         let decimalPos=modFormNmbVal.indexOf(".");
         if (decimalPos>0){
             if(modFormNmbVal.length-decimalPos>3){
-               showWarning("Pole  nie może zawierać więcej niż 2 miejsca po przecinku.");
+               showWarning("Pole nie może zawierać więcej niż 2 miejsca po przecinku.");
                modFormNmb.value="";
                return;
+            }
+            if(modFormNmbVal.length-decimalPos===2){
+                modFormNmbVal=`${modFormNmbVal}0`;    
             }
         }else{
             modFormNmbVal=`${modFormNmbVal}.00`; 
